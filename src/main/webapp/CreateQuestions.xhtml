@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition>
+	<f:view>
+		<h:head>
+			<title>Create Questions</title>
+		</h:head>
+		<h:body>
+			<h:form id="miForm">
+				<table>
+					<tr>
+						<td>Event Date</td>
+						<td><p:calendar id="fecha" navigator="false"
+								value="#{query.fecha}" mode="inline">
+								<p:ajax event="dateSelect" listener="#{query.onDateSelect}"
+									update="mensajes :miForm:tablaPF :miForm:tabla"></p:ajax>
+							</p:calendar></td>
+						<h:messages id="mensajes" style="color:blue" />
+					</tr>
+					<tr>
+						<td>Events:</td>
+						<td><p:dataTable id="tablaPF" value="#{query.eventos}"
+								var="item" selectionMode="single" selection="#{query.evento}"
+								border="1" rowKey="#{item.getEventNumber()}">
+								<p:ajax event="rowSelect" listener="#{query.onEventSelect}"
+									update=":miForm:tabla"></p:ajax>
+								<f:facet name="header">Eventos:</f:facet>
+								<p:column headerText="Código">#{item.getEventNumber()}</p:column>
+								<p:column headerText="Descripcion">#{item.getDescription()}</p:column>
+							</p:dataTable></td>
+
+					</tr>
+					<tr>
+
+						<td>Questions:</td>
+					</tr>
+					<tr>
+						<td><h:dataTable id="tabla" value="#{query.preguntas}"
+								var="item" border="1">
+								<f:facet name="header">Preguntas:</f:facet>
+								<h:column>
+									<f:facet name="header">Código</f:facet>#{item.getQuestionNumber()}</h:column>
+								<h:column>
+									<f:facet name="header">Pregunta</f:facet>#{item.getQuestion()}</h:column>
+							</h:dataTable></td>
+					</tr>
+
+					<tr>
+						<td>Create question:</td>
+					</tr>
+					<tr>
+					<td>Pregunta:</td>
+					<td><h:inputText id="pregunta" value="#{query.preg}">
+						</h:inputText></td>
+					</tr>
+					<tr>
+					<td>Mínimo:</td>
+					<td><h:inputText id="minimo" value="#{query.min}">
+						</h:inputText></td>
+					</tr>
+
+				</table>
+				<h:commandButton value="Create question" action="#{query.crearPregunta}"/>
+			</h:form>
+			<a href="Inicio.xhtml"><h:commandButton value="Atrás" /></a>
+		</h:body>
+	</f:view>
+</ui:composition>
+</html>
