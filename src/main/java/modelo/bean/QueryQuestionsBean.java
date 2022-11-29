@@ -19,7 +19,7 @@ import exceptions.EventFinished;
 import exceptions.QuestionAlreadyExist;
 
 public class QueryQuestionsBean {
-	
+
 	private Date fecha;
 	private Event evento;
 	private BLFacade blfacade;
@@ -29,8 +29,6 @@ public class QueryQuestionsBean {
 	public String preg;
 	public float min;
 
-	
-	
 	public QueryQuestionsBean() {
 		this.blfacade = new BLFacadeImplementation(new DataAccess());
 	}
@@ -41,7 +39,7 @@ public class QueryQuestionsBean {
 
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
-	}	
+	}
 
 	public Event getEvento() {
 		return evento;
@@ -92,55 +90,62 @@ public class QueryQuestionsBean {
 	}
 
 	public void onDateSelect(SelectEvent event) {
-		
+		this.evento = null;
 		this.fecha = (Date) event.getObject();
 		setPreguntas(null);
 		setEventos(getEvents(fecha));
-		System.out.println(eventos);
-		
-		
+
 	}
-	
+
 	public void onEventSelect(SelectEvent event) {
-		
+		this.preguntas = null;
 		this.evento = (Event) event.getObject();
 		setPreguntas(getQuestions(evento));
-		System.out.println(preguntas);
-		
-		
+
 	}
-	
-	public List<Event> getEvents(Date date){
+
+	public List<Event> getEvents(Date date) {
 		return blfacade.getEvents(date);
 	}
-	
-	public List<Question> getQuestions(Event event){
+
+	public List<Question> getQuestions(Event event) {
 		return event.getQuestions();
 	}
-	
+
 	public Question createQuestion(Event evento, String desc, float min) throws EventFinished, QuestionAlreadyExist {
 		return blfacade.createQuestion(evento, desc, min);
 	}
-	
-	public void crearPregunta(){
+
+	public void crearPregunta() {
 		try {
-			if(evento!=null)
+			if (evento != null && !preg.equals("") && min != 0.0) {
 				pregunta = createQuestion(evento, preg, min);
-			else
-				System.out.println("ELIGE EVENTO");
+				reiniciar();
+				if (pregunta != null) {
+					FacesContext.getCurrentInstance().addMessage(null,
+							new FacesMessage("PREGUNTA CREADA CORRECTAMENTE"));
+				} else
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("ERROR AL CREAR LA PREGUNTA"));
+			} else
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage("ELIGE UN EVENTO Y RELLENA TODOS LOS CAMPOS"));
 		} catch (EventFinished e) {
 			// TODO Auto-generated catch block
-			System.out.println("EVENTO FINALIZADO");
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("EVENTO FINALIZADO"));
 		} catch (QuestionAlreadyExist e) {
 			// TODO Auto-generated catch block
-			System.out.println("PREGUNTA YA EXISTE");
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("LA PREGUNTA YA EXISTE"));
 		}
-		if(pregunta!=null) {
-			setPreguntas(getQuestions(evento));
-			System.out.println("PREGUNTA CREADA: "+ pregunta);
-		}
-		else
-			System.out.println("PREGUNTA NO SE HA PODIDO CREAR");
+
+	}
+
+	public void reiniciar() {
+		this.evento = null;
+		this.eventos = null;
+		this.preguntas = null;
+		this.fecha = null;
+		this.min = (float) 0.0;
+		this.preg = "";
 	}
 
 }

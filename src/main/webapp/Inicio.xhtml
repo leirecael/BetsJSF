@@ -4,12 +4,16 @@
 xmlns:ui="http://java.sun.com/jsf/facelets"
 xmlns:h="http://java.sun.com/jsf/html"
 xmlns:f="http://java.sun.com/jsf/core">
+<f:metadata>
+    <f:event type="preRenderView" listener="#{query.reiniciar}" />
+</f:metadata>
+
 <f:view>
 <h:head><title>Aplicación Bets</title></h:head>
 <h:body>
 <h1>Select Option</h1>
 <p>
-<a href ="QueryQuestions.xhtml"><h:commandButton value="Query Questions"/></a>
+<button onclick="location.href='QueryQuestions.xhtml'">QueryQuestions</button>
 </p>
 <p>
 <button onclick="location.href='CreateQuestions.xhtml'">Create Questions</button>

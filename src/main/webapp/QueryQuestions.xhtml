@@ -11,10 +11,11 @@
 			<title>Query Questions</title>
 		</h:head>
 		<h:body>
+			<h1>Query questions</h1>
 			<h:form id="miForm">
 				<table>
 					<tr>
-						<td>Event Date</td>
+						<td><h4>Event Date:</h4></td>
 						<td><p:calendar id="fecha" navigator="false"
 								value="#{query.fecha}" mode="inline">
 								<p:ajax event="dateSelect" listener="#{query.onDateSelect}"
@@ -23,7 +24,7 @@
 						<h:messages id="mensajes" style="color:blue" />
 					</tr>
 					<tr>
-						<td>Events:</td>
+						<td><h4>Events:</h4></td>
 						<td><p:dataTable id="tablaPF" value="#{query.eventos}"
 								var="item" selectionMode="single" selection="#{query.evento}"
 								border="1" rowKey="#{item.getEventNumber()}">
@@ -37,9 +38,8 @@
 					</tr>
 					<tr>
 
-						<td>Questions:</td>
-					</tr>
-					<tr>
+						<td><h4>Questions:</h4></td>
+
 						<td><h:dataTable id="tabla" value="#{query.preguntas}"
 								var="item" border="1">
 								<f:facet name="header">Preguntas:</f:facet>
@@ -52,7 +52,7 @@
 
 				</table>
 			</h:form>
-			<a href="Inicio.xhtml"><h:commandButton value="Atrás" /></a>
+			<button onclick="location.href='Inicio.xhtml'">Atrás</button>
 		</h:body>
 	</f:view>
 </ui:composition>
